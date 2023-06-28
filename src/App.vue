@@ -1,9 +1,19 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
+import { fetchTest } from '@/services/test'
+
+fetchTest()
 </script>
 
 <template>
   <RouterView />
 </template>
 
-<style scoped></style>
+<style>
+@import 'normalize.css';
+
+#app {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+</style>
