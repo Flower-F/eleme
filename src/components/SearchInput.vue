@@ -6,16 +6,17 @@ interface Props {
   background?: string
   placeholder?: string
   shape?: 'square' | 'round'
-  modelValue?: string | number
+  modelValue?: string
 }
 
 const props = defineProps<Props>()
 
 interface Emits {
-  (e: 'search', value?: string | number): void
+  (e: 'search', value?: string): void
   (e: 'cancel'): void
   (e: 'clear'): void
-  (e: 'update:modelValue', value?: string | number): void
+  (e: 'update:modelValue', value?: string): void
+  (e: 'inputClick'): void
 }
 
 const emits = defineEmits<Emits>()
@@ -47,6 +48,7 @@ const onClear = () => {
               class="field__control"
               :value="modelValue"
               :placeholder="placeholder"
+              @click="emits('inputClick')"
               @keypress="onKeyPress"
               @input="(e) => emits('update:modelValue', (e.target as HTMLInputElement).value)"
             />
@@ -83,7 +85,7 @@ const onClear = () => {
   align-items: center;
   box-sizing: border-box;
   padding: var(--search-padding);
-  background: var(--search-background-color);
+  background-color: var(--search-background-color);
 
   &--show-action {
     padding-right: 0;

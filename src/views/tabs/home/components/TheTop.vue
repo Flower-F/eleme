@@ -1,28 +1,15 @@
 <script setup lang="ts">
-// import { Search } from 'vant'
 import SearchInput from '@/components/SearchInput.vue'
 import { type RecommendItem } from '@/types'
-import { ref } from 'vue'
-
 interface Props {
   recommendList: RecommendItem[]
 }
-
 defineProps<Props>()
 
-const searchText = ref('test')
-
-const onSearch = (value?: string | number) => {
-  console.log('search:', value)
+interface Emits {
+  (e: 'searchClick'): void
 }
-
-const onCancel = () => {
-  console.log('cancel')
-}
-
-const onClear = () => {
-  console.log('clear')
-}
+const emits = defineEmits<Emits>()
 </script>
 
 <template>
@@ -35,15 +22,15 @@ const onClear = () => {
     </div>
 
     <SearchInput
-      :show-action="true"
       shape="round"
       background="linear-gradient(to right, rgb(53, 200, 250), rgb(31, 175, 243))"
       placeholder="世界茶饮 35减2"
-      v-model="searchText"
-      @search="onSearch"
-      @clear="onClear"
-      @cancel="onCancel"
-    />
+      @inputClick="emits('searchClick')"
+    >
+      <template #right-icon>
+        <button class="search-button" @click="emits('searchClick')">搜索</button>
+      </template>
+    </SearchInput>
 
     <div class="search-recommend">
       <div class="tag" v-for="recommend in recommendList" :key="recommend.value">
@@ -85,6 +72,12 @@ const onClear = () => {
       height: 24px;
       margin-left: 10px;
     }
+  }
+
+  .search-button {
+    background-color: transparent;
+    border: none;
+    outline: none;
   }
 
   .search-recommend {
