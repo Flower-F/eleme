@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import TheTop from './components/TheTop.vue'
 import SearchView from '../../search/SearchView.vue'
-import { useToggle } from '../../../composables/useToggle'
+import LoadingView from '@/components/LoadingView.vue'
+import { useToggle } from '@/composables/useToggle'
+import { useAsync } from '@/composables/useAsync'
+import { fetchHomePageData } from '@/services/home'
+import type { HomeInfo } from '@/types'
 
 const recommendList = [
   {
@@ -15,6 +19,8 @@ const recommendList = [
 ]
 
 const [isSearchView, toggleSearchView] = useToggle(false)
+
+const { data, loading } = useAsync(fetchHomePageData, {} as HomeInfo)
 </script>
 
 <template>
@@ -23,6 +29,9 @@ const [isSearchView, toggleSearchView] = useToggle(false)
       <SearchView v-if="isSearchView" @cancel="toggleSearchView" />
     </Transition>
     <TheTop :recommendList="recommendList" @searchClick="toggleSearchView" />
+    <LoadingView :loading="loading" type="skeleton">
+      <div>{{ data }}</div>
+    </LoadingView>
   </div>
 </template>
 
